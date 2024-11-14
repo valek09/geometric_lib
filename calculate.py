@@ -18,7 +18,6 @@ def calc(fig, func, size):
     assert func in figs[fig], "Invalid function"
     assert all(s > 0 for s in size), "All dimensions must be positive"
 
-    # Вызов нужной функции через словарь
     result = figs[fig][func](*size)
     return result
 
@@ -29,10 +28,14 @@ if __name__ == "__main__":
     size = []
 
     while fig not in figs:
-        fig = input(f"Enter figure name, available are {list(figs.keys())}:\n")
+        fig = input(
+            f"Enter figure name, available are {list(figs.keys())}:\n"
+        )
 
     while func not in figs[fig]:
-        func = input(f"Enter function name, available are {list(figs[fig].keys())}:\n")
+        func = input(
+            f"Enter function name, available are {list(figs[fig].keys())}:\n"
+        )
 
     expected_size_count = 1 if fig == "circle" else 1
     while len(size) != expected_size_count:
