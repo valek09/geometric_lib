@@ -1,12 +1,25 @@
-figs = ['circle', 'square']
-funcs = ['perimeter', 'area']
-sizes = {}
+from circle import area as circle_area, perimeter as circle_perimeter
+from square import area as square_area, perimeter as square_perimeter
+
+figs = {
+    'circle': {
+        'area': circle_area,
+        'perimeter': circle_perimeter,
+    },
+    'square': {
+        'area': square_area,
+        'perimeter': square_perimeter,
+    }
+}
 
 
 def calc(fig, func, size):
     assert fig in figs, "Invalid figure"
-    assert func in funcs, "Invalid function"
-    result = eval(f'{fig}.{func}(*{size})')
+    assert func in figs[fig], "Invalid function"
+    assert all(s > 0 for s in size), "All dimensions must be positive"
+
+    # Вызов нужной функции через словарь
+    result = figs[fig][func](*size)
     return result
 
 
@@ -16,17 +29,18 @@ if __name__ == "__main__":
     size = []
 
     while fig not in figs:
-        fig = input(f"Enter figure name, available are {figs}:\n")
+        fig = input(f"Enter figure name, available are {list(figs.keys())}:\n")
 
-    while func not in funcs:
-        func = input(f"Enter function name, available are {funcs}:\n")
+    while func not in figs[fig]:
+        func = input(f"Enter function name, available are {list(figs[fig].keys())}:\n")
 
-    while len(size) != sizes.get(f"{func}-{fig}", 1):
+    expected_size_count = 1 if fig == "circle" else 1
+    while len(size) != expected_size_count:
         size = list(
             map(
                 int,
                 input(
-                    "Input figure sizes separated by space\n"
+                    f"Input {expected_size_count} size(s) separated by space\n"
                 ).split(),
             )
         )
